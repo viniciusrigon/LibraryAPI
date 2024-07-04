@@ -1,5 +1,6 @@
 using Domain.Entities;
 using Domain.Services;
+using LibraryAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryAPI.Controllers;
@@ -21,5 +22,11 @@ public class LibraryController : ControllerBase
     public IEnumerable<Book> Get()
     {
         return new List<Book>();
+    }
+
+    [HttpPost]
+    public ActionResult<BookModel> PostBook(BookModel book)
+    {
+        throw new NotImplementedException();
     }
 }

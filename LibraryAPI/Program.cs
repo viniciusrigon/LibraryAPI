@@ -1,7 +1,15 @@
+using Domain;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var configuration = builder.Configuration;
+builder.Services.AddDbContext<LibraryContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
+        x=>x.MigrationsHistoryTable("_EfMigrations", configuration.GetSection("Schema").GetSection("<YourDataSchema>").Value)));
 
+
+// Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
