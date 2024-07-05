@@ -19,6 +19,11 @@ public class BookService
         return await _bookRepository.Get();
     }
 
+    public async Task<Book> Get(long id)
+    {
+        return await _bookRepository.GetById(id);
+    }
+
     public async Task<Book> Insert(Book book)
     {
         return await _bookRepository.Create(book);

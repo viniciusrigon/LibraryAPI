@@ -15,4 +15,8 @@
       <Compile Remove="Database\UnitOfWork.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AWSSDK.S3" Version="3.7.310.1" />
+    </ItemGroup>
+
 </Project>

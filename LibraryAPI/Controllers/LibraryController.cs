@@ -36,6 +36,23 @@ public class LibraryController : ControllerBase
         }
     }
 
+    [HttpGet]
+    [Route("GetBookById")]
+    public async Task<ActionResult<BookDTO>> GetBook(long id)
+    {
+        try
+        {
+            var result = await _bookService.Get(id);
+            var books = _mapper.Map<BookDTO>(result);
+            return Ok(books);
+            
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
+    }
+
     [HttpPost]
     public async Task<ActionResult<BookDTO>> Post([FromBody] BookDTO book)
     {

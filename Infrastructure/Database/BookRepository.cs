@@ -45,7 +45,7 @@ public class BookRepository : IBookRepository
         _libraryContext.Books.Remove(entity);
     }
 
-    public async Task<Book> GetById(int id)
+    public async Task<Book> GetById(long id)
     {
         return await _libraryContext.Books.FindAsync(id);
 

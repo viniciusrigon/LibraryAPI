@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B52BF916-A261-4D46-8EEC-8DEF147BAAA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAPI.Tests", "LibraryAPI.Tests\LibraryAPI.Tests.csproj", "{0318D642-E14D-492E-BF17-F9D433D95D09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAPI.UnitTests", "LibraryAPI.UnitTests\LibraryAPI.UnitTests.csproj", "{0318D642-E14D-492E-BF17-F9D433D95D09}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
