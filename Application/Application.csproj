@@ -10,4 +10,9 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Interfaces\IUnitOfWork.cs" />
+      <Compile Remove="Interfaces\IBookService.cs" />
+    </ItemGroup>
+
 </Project>

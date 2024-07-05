@@ -10,4 +10,9 @@
       <ProjectReference Include="..\Application\Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Database\RepositoryBase.cs" />
+      <Compile Remove="Database\UnitOfWork.cs" />
+    </ItemGroup>
+
 </Project>

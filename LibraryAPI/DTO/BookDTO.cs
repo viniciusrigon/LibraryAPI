@@ -1,6 +1,6 @@
-namespace LibraryAPI.Models;
+namespace LibraryAPI.DTO;
 
-public class BookModel
+public partial class BookDTO
 {
     public string Title { get; set; }
     public string Author { get; set; }
