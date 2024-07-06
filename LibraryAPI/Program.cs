@@ -2,7 +2,9 @@ using Domain;
 using Infrastructure;
 using Application.Interfaces;
 using Application.Services;
+using Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
+using Amazon.S3;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,11 +19,24 @@ builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
         x=>x.MigrationsHistoryTable("_EfMigrations", configuration.GetSection("Schema").GetSection("<YourDataSchema>").Value)));
 
+var appConfig = new AppConfiguration
+{
+    BucketName = configuration.GetSection("AWS").GetSection("Bucket").Value,
+    Region = configuration.GetSection("AWS").GetSection("Region").Value,
+    AwsAccessKey = configuration.GetSection("AWS").GetSection("AwsAccessKey").Value,
+    AwsSecretAccessKey = configuration.GetSection("AWS").GetSection("AwsSecretAccessKey").Value,
+    AwsSessionToken = configuration.GetSection("AWS").GetSection("AwsSessionToken").Value,
+    CloudFrontDomainName = configuration.GetSection("AWS").GetSection("CloudFrontDomainName").Value,
+};
+
 /************************************************
 // * Dependency Injection
 // ************************************************/
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<BookService>();
+builder.Services.AddSingleton<AppConfiguration>(appConfig);
+builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+builder.Services.AddAWSService<IAmazonS3>();
 
 /*************************************************
  * Enable CORS

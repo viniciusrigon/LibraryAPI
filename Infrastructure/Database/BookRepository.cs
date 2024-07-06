@@ -29,6 +29,7 @@ public class BookRepository : IBookRepository
 
     public async Task<Book> Update(Book entity)
     {
+        _libraryContext.Entry(entity).State = EntityState.Modified;
         _libraryContext.Update(entity);
         await _libraryContext.SaveChangesAsync();
             
@@ -47,7 +48,7 @@ public class BookRepository : IBookRepository
 
     public async Task<Book> GetById(long id)
     {
-        return await _libraryContext.Books.FindAsync(id);
+        return await _libraryContext.Books.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
     }
 }

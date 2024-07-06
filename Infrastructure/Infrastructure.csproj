@@ -13,6 +13,7 @@
     <ItemGroup>
       <Compile Remove="Database\RepositoryBase.cs" />
       <Compile Remove="Database\UnitOfWork.cs" />
+      <Compile Remove="Storage\AwsS3Services.cs" />
     </ItemGroup>
 
     <ItemGroup>
