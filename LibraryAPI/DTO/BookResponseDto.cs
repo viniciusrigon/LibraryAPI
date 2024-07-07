@@ -1,6 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace LibraryAPI.DTO;
 
-public partial class BookDTO
+public partial class BookResponseDto
 {
     public long Id { get; set; }
     public string Title { get; set; }

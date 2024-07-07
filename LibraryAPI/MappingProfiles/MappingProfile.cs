@@ -8,7 +8,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        this.CreateMap<Book, BookDTO>().ReverseMap();
+        this.CreateMap<Book, BookResponseDto>();
+        this.CreateMap<BookRequestDto, Book>();
     }
-    
 }

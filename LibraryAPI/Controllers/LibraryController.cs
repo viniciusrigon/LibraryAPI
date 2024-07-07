@@ -36,12 +36,12 @@ public class LibraryController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BookDTO>>> Get()
+    public async Task<ActionResult<IEnumerable<BookResponseDto>>> Get()
     {
         try
         {
             var results = await _bookService.Get();
-            var books = _mapper.Map<IEnumerable<BookDTO>>(results);
+            var books = _mapper.Map<IEnumerable<BookResponseDto>>(results);
             return Ok(books);
         }
         catch (Exception e)
@@ -52,12 +52,12 @@ public class LibraryController : ControllerBase
 
     [HttpGet]
     [Route("GetBookById")]
-    public async Task<ActionResult<BookDTO>> GetBook(long id)
+    public async Task<ActionResult<BookResponseDto>> GetBook(long id)
     {
         try
         {
             var result = await _bookService.Get(id);
-            var books = _mapper.Map<BookDTO>(result);
+            var books = _mapper.Map<BookResponseDto>(result);
             return Ok(books);
             
         }
@@ -84,7 +84,7 @@ public class LibraryController : ControllerBase
             {
 
                 var result = await _bookService.Get(bookId);
-                var book = _mapper.Map<BookDTO>(result);
+                var book = _mapper.Map<BookResponseDto>(result);
                 book.CoverUrl = $"{_cloudFromDomainName}/{file.FileName}";
 
                 var updateBook = _mapper.Map<Book>(book);
@@ -104,7 +104,7 @@ public class LibraryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<BookDTO>> Post([FromBody] BookDTO book)
+    public async Task<ActionResult<BookResponseDto>> Post([FromBody] BookRequestDto book)
     {
         try
         {
@@ -118,13 +118,18 @@ public class LibraryController : ControllerBase
         }
     }
 
-    [HttpPut]
-    public async Task<ActionResult<BookDTO>> Put([FromBody] BookDTO book)
+    [HttpPut] 
+    [Route("{bookId:long}")]
+    public async Task<ActionResult<BookResponseDto>> Put(long bookId, [FromBody] BookRequestDto bookBody)
     {
         try
         {
-            var updateBook = _mapper.Map<Book>(book);
-            var result = await _bookService.Update(updateBook);
+            var bookEntity = await _bookService.Get(bookId);
+            bookEntity.ReleaseYear = bookBody.ReleaseYear;
+            bookEntity.Author = bookBody.Author;
+            bookEntity.Title = bookBody.Title;
+            
+            var result = await _bookService.Update(bookEntity);
             return Ok(result);
         }
         catch (Exception e)
