@@ -1,3 +1,4 @@
+using System.Net;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -79,7 +80,8 @@ public class LibraryController : ControllerBase
                 Stream = file.OpenReadStream()
             });
 
-            
+            if (uploadReponse.HttpStatusCode == HttpStatusCode.OK)
+            {
 
                 var result = await _bookService.Get(bookId);
                 var book = _mapper.Map<BookDTO>(result);
@@ -89,8 +91,11 @@ public class LibraryController : ControllerBase
                 var resultUpdate = await _bookService.Update(updateBook);
 
                 return Ok();
-            
-            
+            }
+            else
+            {
+                return BadRequest(uploadReponse);
+            }
         }
         catch (Exception e)
         {
