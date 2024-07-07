@@ -34,6 +34,7 @@ var appConfig = new AppConfiguration
 // ************************************************/
 builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<AWSService>();
 builder.Services.AddSingleton<AppConfiguration>(appConfig);
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>();

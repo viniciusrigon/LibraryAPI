@@ -4,6 +4,7 @@ using Amazon.S3.Model;
 using Domain.Entities;
 using Application.Services;
 using AutoMapper;
+using Infrastructure.File;
 using Infrastructure.Storage;
 using LibraryAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
@@ -16,19 +17,20 @@ public class LibraryController : ControllerBase
 {
     private readonly ILogger<LibraryController> _logger;
     private readonly BookService _bookService;
+    private readonly AWSService _awsService;
     private readonly IMapper _mapper;
-    private readonly IAmazonS3 _s3Client;
-    private readonly string BUCKET_NAME;
     private readonly string _cloudFromDomainName;
-    private const string prefix = "covers";
 
-    public LibraryController(ILogger<LibraryController> logger, BookService bookService, IMapper mapper, AppConfiguration appConfiguration)
+    public LibraryController(ILogger<LibraryController> logger,
+        BookService bookService,
+        IMapper mapper,
+        AWSService awsService,
+        AppConfiguration appConfiguration)
     {
         _logger = logger;
         _bookService = bookService;
         _mapper = mapper;
-        _s3Client = new AmazonS3Client(appConfiguration.AwsAccessKey, appConfiguration.AwsSecretAccessKey, RegionEndpoint.USEast2);
-        BUCKET_NAME = appConfiguration.BucketName;
+        _awsService = awsService;
         _cloudFromDomainName = appConfiguration.CloudFrontDomainName;
     }
 
@@ -70,34 +72,25 @@ public class LibraryController : ControllerBase
     {
         try
         {
-            var bucketExists = await _s3Client.DoesS3BucketExistAsync(BUCKET_NAME);
-            if (!bucketExists) return NotFound($"Bucket {BUCKET_NAME} does not exist.");
-            var request = new PutObjectRequest()
+            var uploadReponse = await _awsService.UploadFile(new FileDTO()
             {
-                BucketName = BUCKET_NAME,
-                Key = string.IsNullOrEmpty(prefix) ? file.FileName : $"{prefix?.TrimEnd('/')}/{file.FileName}",
-                InputStream = file.OpenReadStream()
-            };
-            request.Metadata.Add("Content-Type", file.ContentType);
-            await _s3Client.PutObjectAsync(request);
+                FileName = file.FileName,
+                ContentType = file.ContentType,
+                Stream = file.OpenReadStream()
+            });
 
-            // var urlRequest = new GetPreSignedUrlRequest()
-            // {
-            //     BucketName = BUCKET_NAME,
-            //     Key = request.Key,
-            //     Expires = DateTime.UtcNow.AddHours(1)
-            // };
-            //
-            // string coverUrl = await _s3Client.GetPreSignedURLAsync(urlRequest);
-        
-            var result = await _bookService.Get(bookId);
-            var book = _mapper.Map<BookDTO>(result);
-            book.CoverUrl = $"{_cloudFromDomainName}/{file.FileName}";
-        
-            var updateBook = _mapper.Map<Book>(book);
-            var resultUpdate = await _bookService.Update(updateBook);
-        
-            return Ok();
+            
+
+                var result = await _bookService.Get(bookId);
+                var book = _mapper.Map<BookDTO>(result);
+                book.CoverUrl = $"{_cloudFromDomainName}/{file.FileName}";
+
+                var updateBook = _mapper.Map<Book>(book);
+                var resultUpdate = await _bookService.Update(updateBook);
+
+                return Ok();
+            
+            
         }
         catch (Exception e)
         {
