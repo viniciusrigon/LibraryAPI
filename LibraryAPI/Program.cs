@@ -5,6 +5,8 @@ using Application.Services;
 using Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Amazon.S3;
+using Infrastructure.Configuration;
+using Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,13 +21,12 @@ builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"),
         x=>x.MigrationsHistoryTable("_EfMigrations", configuration.GetSection("Schema").GetSection("<YourDataSchema>").Value)));
 
+
+
 var appConfig = new AppConfiguration
 {
     BucketName = configuration.GetSection("AWS").GetSection("Bucket").Value,
     Region = configuration.GetSection("AWS").GetSection("Region").Value,
-    AwsAccessKey = configuration.GetSection("AWS").GetSection("AwsAccessKey").Value,
-    AwsSecretAccessKey = configuration.GetSection("AWS").GetSection("AwsSecretAccessKey").Value,
-    AwsSessionToken = configuration.GetSection("AWS").GetSection("AwsSessionToken").Value,
     CloudFrontDomainName = configuration.GetSection("AWS").GetSection("CloudFrontDomainName").Value,
 };
 
@@ -38,6 +39,8 @@ builder.Services.AddScoped<AWSService>();
 builder.Services.AddSingleton<AppConfiguration>(appConfig);
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>();
+//builder.Services.Configure<AWSApiCredentials>(builder.Configuration);
+
 
 /*************************************************
  * Enable CORS
@@ -51,6 +54,11 @@ builder.Services.AddCors(policy =>
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+// builder.Host.ConfigureAppConfiguration(((_, configurationBuilder) =>
+// {
+//     configurationBuilder.AddAmazonSecretsManager("us-east-1", "arn:aws:secretsmanager:us-east-1:891377099603:secret:library-api-secrets-hmCHEy");
+// }));
 
 var app = builder.Build();
 

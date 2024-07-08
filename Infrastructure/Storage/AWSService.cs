@@ -2,7 +2,9 @@ using System.Net;
 using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
+using Infrastructure.Configuration;
 using Infrastructure.File;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Storage;
 
@@ -13,9 +15,11 @@ public class AWSService
     
     private const string prefix = "covers";
 
+    //public AWSService(AppConfiguration appConfiguration, IOptions<AWSApiCredentials> options)
     public AWSService(AppConfiguration appConfiguration)
     {
-        _s3Client = new AmazonS3Client(appConfiguration.AwsAccessKey, appConfiguration.AwsSecretAccessKey, RegionEndpoint.USEast2);
+        //_s3Client = new AmazonS3Client(options.Value.AwsAccessKey, options.Value.AwsSecretAccessKey, RegionEndpoint.USEast1);
+        _s3Client = new AmazonS3Client();
         BUCKET_NAME = appConfiguration.BucketName;
     }
 
