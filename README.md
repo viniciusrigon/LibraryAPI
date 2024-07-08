@@ -1,9 +1,9 @@
 This project is a technical challenge
 
 Tools
-IDE: JetBrains Rider
-.NET: Core 8.0
-Database: PostegresSQL
+IDE: JetBrains Rider\
+.NET: Core 8.0\
+Database: PostegresSQL\
 SO: ZorinOS
 
 Configure Database
