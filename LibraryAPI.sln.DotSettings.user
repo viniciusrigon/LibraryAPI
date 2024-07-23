@@ -3,7 +3,7 @@
   &lt;Assembly Path="/usr/lib/dotnet/packs/Microsoft.AspNetCore.App.Ref/8.0.5/ref/net8.0/Microsoft.AspNetCore.Mvc.dll" /&gt;
   &lt;Assembly Path="/usr/lib/dotnet/packs/Microsoft.AspNetCore.App.Ref/8.0.5/ref/net8.0/Microsoft.AspNetCore.Mvc.Abstractions.dll" /&gt;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/vinicius/.cache/JetBrains/Rider2024.1/resharper-host/temp/Rider/vAny/CoverageData/_LibraryAPI.-1962180259/Snapshot/snapshot.utdcvr</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestProjectMapping/=25DC9933_002DC866_002D447B_002D9E5E_002D2773C15C16CC/@EntryIndexedValue">0318D642-E14D-492E-BF17-F9D433D95D09</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/CreateUnitTestDialog/TestTemplateMapping/=NUnit3x/@EntryIndexedValue">db4927dd-2e12-48a7-9a84-2b7e3e31b9c8</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=80067f57_002D9809_002D4f1a_002D9f50_002D9cff5c93a3d8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Create" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
